@@ -1,0 +1,3 @@
+﻿- To generate or update the model in EF run the next command line in PMC (Package Manage Console):
+
+Scaffold-DbContext -UseDatabaseNames "Data Source=JHANCD10\SQLEXPRESS;Initial Catalog=Web_Shop;Integrated Security=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -ContextDir DAL\Contexts -Context "WebShopDbContext" -OutputDir DAL\Models -f -NoPluralize
