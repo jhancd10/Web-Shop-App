@@ -3,6 +3,7 @@ using WebShop.Core.Interfaces;
 using WebShop.Core.Repositories;
 using WebShop.Core.Services;
 using WebShop.Data.DAL.Contexts;
+using WebShop.GraphQL.API.Schema.Mutations;
 using WebShop.GraphQL.API.Schema.Queries;
 
 // Create the container
@@ -17,7 +18,9 @@ builder.Services
     .AddGraphQLServer()
     .AddFiltering()
     .AddQueryType<QueryType>()
-    .RegisterDbContext<WebShopDbContext>();
+    .AddMutationType<MutationType>()
+    .RegisterDbContext<WebShopDbContext>()
+    .AddApolloTracing();
 
 // Configure services to use DI
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();

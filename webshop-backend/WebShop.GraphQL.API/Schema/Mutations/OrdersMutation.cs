@@ -1,11 +1,12 @@
 ﻿using WebShop.Data.Common;
+using WebShop.Data.DAL.Models;
 using WebShop.GraphQL.API.Schema.InputTypes;
 
 namespace WebShop.GraphQL.API.Schema.Mutations
 {
-    public partial class Mutation
+    public partial class MutationType
     {
-        public async Task<bool> CreateOrder(OrderInputType orderInput)
+        public async Task<Orders> CreateOrder(OrderInputType orderInput)
         {
             // Stock validation
             var orderProducts = orderInput.OrderDetail
@@ -31,11 +32,11 @@ namespace WebShop.GraphQL.API.Schema.Mutations
                     await _orderDetailRepo.Create(order.Order_Id, detail.ProductId, detail.Quantity, detail.Price);
                     await _productRepo.UpdateStock(detail.ProductId, detail.Quantity);
                 }
+
+                return order;
             }
 
             else throw new GraphQLException("Error trying to validate the products stock.");
-
-            return true;
         }
     }
 }

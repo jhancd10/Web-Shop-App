@@ -2,14 +2,14 @@
 
 namespace WebShop.GraphQL.API.Schema.Mutations
 {
-    public partial class Mutation
+    public partial class MutationType
     {
         private readonly ICustomerService _customerService;
         private readonly IOrderRepo _orderRepo;
         private readonly IOrderDetailRepo _orderDetailRepo;
         private readonly IProductRepo _productRepo;
 
-        public Mutation(
+        public MutationType(
             ICustomerService customerService,
             IOrderRepo orderRepo,
             IOrderDetailRepo orderDetailRepo,

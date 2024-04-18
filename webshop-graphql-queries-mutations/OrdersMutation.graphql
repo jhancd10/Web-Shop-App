@@ -1,0 +1,16 @@
+# Orders Creation
+mutation {
+  createOrder(
+    orderInput: {
+      total: 702.72,
+      orderDetail: [
+        {
+          productId: 101,
+          price: 351.36,
+         quantity: 2 
+        }
+      ]
+  }) {
+   order_Id 
+  }
+}

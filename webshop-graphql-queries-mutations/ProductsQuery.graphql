@@ -1,0 +1,30 @@
+# Products using filters: price - Category
+query {
+  allProducts(
+    skip: 0, 
+    take: 10,
+    where: { 
+      and: [
+        { category: { some: { category_Id: { eq: 1 } } } },
+        { price: { gte: 800 } }
+      ]
+    }) {
+    items {
+      product_Id
+      product_Code
+      title
+      description
+      price
+      available_Stock
+      category {
+        category_Name
+        category_Icon
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
+    totalCount
+  }
+}

@@ -1,0 +1,29 @@
+# Get all categories
+query {
+  allCategories {
+    items {
+      category_Id
+      category_Name
+      category_Icon
+    }
+  }
+}
+
+# Categories using paging and adding products detail
+query {
+  allCategories(skip: 0, take: 5) {
+    items {
+      category_Id
+      category_Name
+      category_Icon
+      product {
+        product_Id
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+    }
+    totalCount
+  }
+}
