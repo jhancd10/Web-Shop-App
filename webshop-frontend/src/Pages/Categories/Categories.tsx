@@ -1,6 +1,6 @@
-import { Alert, Box, CircularProgress, Stack } from "@mui/material"
+import { Alert, CircularProgress, Grid, Stack } from "@mui/material"
 import { useCategoriesReport } from "../../Services/GraphQl/Categories/categories-hooks"
-import CustomPaginationTable from "./CategoriesTable"
+import CategoriesTable from "./CategoriesTable"
 
 export default function Categories() {
 
@@ -17,16 +17,24 @@ export default function Categories() {
     return(
         <>
             {loading ? 
-                <Box sx={{ display: 'flex' }}>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{ minHeight: '100vh' }}>
+
                     <CircularProgress />
-                </Box> 
+
+                </Grid> 
                 :
                 <>
                     <Stack sx={{ width: '100%', mb: 2 }} spacing={2}>
                         <Alert severity="success">Categories loaded successfully</Alert>
                     </Stack>
 
-                    <CustomPaginationTable data={data.allCategories} />
+                    <CategoriesTable data={data.allCategories} />
                 </>
             }
         </>

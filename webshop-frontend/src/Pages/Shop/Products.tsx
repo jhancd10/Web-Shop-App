@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Alert, Box, CircularProgress, Stack } from "@mui/material"
+import { Alert, CircularProgress, Grid, Stack } from "@mui/material"
 import { useProducts } from "../../Services/GraphQl/Products/products-hooks"
 import ShowProducts from "./ShowProducts"
 
@@ -23,9 +23,17 @@ export default function Products(props: any) {
     return(
         <>
             {loading ? 
-                <Box sx={{ display: 'flex' }}>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{ minHeight: '100vh' }}>
+
                     <CircularProgress />
-                </Box> 
+
+                </Grid> 
                 :
                 <ShowProducts 
                     data={{ 

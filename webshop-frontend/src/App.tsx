@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ThemeProvider, createTheme } from '@mui/material/styles'
-import { Alert, Box, CircularProgress, Container, Stack } from "@mui/material"
+import { Alert, CircularProgress, Container, Grid, Stack } from "@mui/material"
 import NavBar from "./Components/NavBar"
 import { Route, Routes } from "react-router-dom"
 import Shop from "./Pages/Shop/Shop"
@@ -50,9 +50,17 @@ function App() {
   return (
     <>
       {loading ? 
-        <Box sx={{ display: 'flex' }}>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{ minHeight: '100vh' }}>
+
             <CircularProgress />
-        </Box> 
+
+          </Grid> 
         :
         <ThemeProvider theme={theme}>
           <NavBar />

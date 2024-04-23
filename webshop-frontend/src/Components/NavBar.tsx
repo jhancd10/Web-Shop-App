@@ -18,6 +18,8 @@ export default function NavBar() {
   console.log(shoppingCart)
 
   const [open, setOpen] = useState(false)
+
+  const handleCloseDrawer = () => setOpen(false)
   
   return (
     <>
@@ -29,9 +31,9 @@ export default function NavBar() {
             <Typography variant="h6">Web Shop</Typography>
           </Stack>
 
-          <Stack direction="row">
-            <Button color="inherit" startIcon={<LocalMallIcon />} component={NavLink} to="/">Shop</Button>
+          <Stack direction="row" spacing={2}>
             <Button color="inherit" startIcon={<ListIcon />} component={NavLink} to="/Categories">Categories</Button>
+            <Button color="inherit" startIcon={<LocalMallIcon />} component={NavLink} to="/">Shop</Button>
             <Button color="inherit" startIcon={<HistoryIcon />} component={NavLink} to="/Orders">Orders</Button>
           </Stack>
           
@@ -45,9 +47,9 @@ export default function NavBar() {
       </AppBar>
 
       <Drawer PaperProps={{ sx: { width: "40%" } }} open={open} 
-        anchor="right" onClick={() => setOpen(false) }>
+        anchor="right" >
           
-          <ShoppingCartDetail />
+          <ShoppingCartDetail handleCloseDrawer={ () => handleCloseDrawer() } />
           
       </Drawer>
     </>

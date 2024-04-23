@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Box, Button, Divider, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material"
 import { useShoppingCartStore } from "../../Services/Storage/shopping-cart-hook"
 import RemoveShoppingCartTwoToneIcon from '@mui/icons-material/RemoveShoppingCartTwoTone'
@@ -6,10 +7,12 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag'
+import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen'
 import React from "react"
 import { useCreateNewOrder } from "../../Services/GraphQl/Orders/orders-hooks"
+import currency from "currency.js"
 
-export default function ShoppingCartDetail() {
+export default function ShoppingCartDetail(props: any) {
 
     const shoppingCart = useShoppingCartStore(state => state.shoppingCart)
     const updateShoppingCart = useShoppingCartStore(state => state.updateShoppingCart)
@@ -33,6 +36,7 @@ export default function ShoppingCartDetail() {
 
     const handleClearCart = () => {
         clearShoppingCart()
+        props.handleCloseDrawer()
     }
 
     const handleFinishPurchase = () => {
@@ -48,9 +52,11 @@ export default function ShoppingCartDetail() {
                 }),
                 total: shoppingCart.reduce((sum, current) => sum + (current.price * current.quantity), 0)
             }
-         }})
+        }})
 
-         clearShoppingCart()
+        clearShoppingCart()
+        props.handleCloseDrawer()
+        window.location.reload()
     }
 
     return (
@@ -71,7 +77,7 @@ export default function ShoppingCartDetail() {
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-evenly', borderRadius: 1 }}>
                     <Typography variant="subtitle2">
-                        Total Items: {shoppingCart.reduce((sum, current) => sum + current.quantity, 0)}
+                        Total Items: {currency(shoppingCart.reduce((sum, current) => sum + current.quantity, 0)).value}
                     </Typography>
                     
                 </Box>
@@ -81,24 +87,36 @@ export default function ShoppingCartDetail() {
                 <Box sx={{ display: 'flex', justifyContent: 'space-evenly', p: 1, m: 1, borderRadius: 1 }}>
                     <Typography variant="subtitle2">
                         Total Value: 
-                        $ {shoppingCart.reduce((sum, current) => sum + (current.price * current.quantity), 0)}
+                        $ {currency(shoppingCart.reduce((sum, current) => sum + (current.price * current.quantity), 0)).value}
                     </Typography>
                     
                 </Box>
                 
                 <Box sx={{ display: 'flex', justifyContent: 'space-evenly', p: 1, m: 1, borderRadius: 1 }}>
 
-                    <Button variant="contained" startIcon={<RemoveShoppingCartTwoToneIcon />} 
-                            color="error" size="medium" style={{ marginTop: '8px' }}
-                            onClick={() => handleClearCart()}>
-                        Clear Cart
+                    <Button variant="contained" color="inherit" endIcon={<CloseFullscreenIcon />}
+                            size="medium" style={{ marginTop: '8px' }}
+                            onClick={() => props.handleCloseDrawer()}>
+                        Close
                     </Button>
 
-                    <Button variant="contained" color="primary" endIcon={<GradingTwoToneIcon />}
-                            size="medium" style={{ marginTop: '8px' }}
-                            onClick={() => handleFinishPurchase()}>
-                        Finish Purchase
-                    </Button>
+                    {shoppingCart.length !== 0 ? 
+                        <>
+                            <Button variant="contained" startIcon={<RemoveShoppingCartTwoToneIcon />} 
+                            color="error" size="medium" style={{ marginTop: '8px' }}
+                            onClick={() => handleClearCart()}>
+                                Clear Cart
+                            </Button>
+
+                            <Button variant="contained" color="primary" endIcon={<GradingTwoToneIcon />}
+                                    size="medium" style={{ marginTop: '8px' }}
+                                    onClick={() => handleFinishPurchase()}>
+                                Finish Purchase
+                            </Button>
+                        </>
+                        :
+                        <></>
+                    }
 
                 </Box>
 
@@ -133,7 +151,7 @@ export default function ShoppingCartDetail() {
                                 </Box>
                             
                                 <Box sx={{display: 'inline-flex', m: 1, p: 1}}>
-                                    <Typography variant="subtitle2">$ {item.price * item.quantity}</Typography>
+                                    <Typography variant="subtitle2">$ {currency(item.price * item.quantity).value}</Typography>
                                 </Box>
                             
                                 <Box sx={{display: 'inline-flex', m: 1, p: 1}}>

@@ -21,8 +21,6 @@ export default function CategoriesTable(props: any | null) {
   const [rows, setRows] = useState([] as CategoryBodyProps[])
   const [total, setTotal] = useState(0)
 
-  console.log(props)
-
   const [getCategories, result] = useCategoriesReportLazy(rowsPerPage * page, rowsPerPage)
 
   const refetchCategories = () => {
