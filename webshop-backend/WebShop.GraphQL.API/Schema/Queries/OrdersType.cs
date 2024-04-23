@@ -28,7 +28,7 @@ namespace WebShop.GraphQL.API.Schema.Queries
                 });
             });
 
-            return orders;
+            return orders.OrderByDescending(x => x.Order_Date).ToList();
         }
     }
 }
