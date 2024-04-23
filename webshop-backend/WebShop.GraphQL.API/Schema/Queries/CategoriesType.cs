@@ -8,7 +8,7 @@ namespace WebShop.GraphQL.API.Schema.Queries
     {
         [UseOffsetPaging(IncludeTotalCount = true)]
         [UseFiltering]
-        public IQueryable<Categories> AllCategories([Service] WebShopDbContext _context)
-            => _context.Categories.Include(c => c.Product);
+        public IQueryable<Categories> AllCategories(WebShopDbContext _context)
+            =>  _context.Categories.Include(c => c.Product);
     }
 }

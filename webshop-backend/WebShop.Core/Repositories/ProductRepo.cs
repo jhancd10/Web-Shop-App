@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WebShop.Core.Interfaces;
 using WebShop.Data.Common;
 using WebShop.Data.DAL.Contexts;
 using WebShop.Data.DAL.Models;
 
 namespace WebShop.Core.Repositories
 {
-    public class ProductRepo : IProductRepo
+    public class ProductRepo : IAsyncDisposable
     {
         private readonly WebShopDbContext _context;
 
         public ProductRepo(
-            WebShopDbContext context)
+            IDbContextFactory<WebShopDbContext> contextFactory)
         {
-            _context = context;
+            _context = contextFactory.CreateDbContext();
         }
 
         public async Task<Products> GetById(int id)
@@ -45,7 +44,7 @@ namespace WebShop.Core.Repositories
         {
             // Get product data
             var product = await GetById(id);
-            
+
             // Update stock
             product.Available_Stock -= quantity;
 
@@ -53,6 +52,11 @@ namespace WebShop.Core.Repositories
             await _context.SaveChangesAsync();
 
             return product;
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return _context.DisposeAsync();
         }
     }
 }

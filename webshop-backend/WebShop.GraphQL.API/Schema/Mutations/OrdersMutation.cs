@@ -1,4 +1,5 @@
-﻿using WebShop.Data.Common;
+﻿using WebShop.Core.Repositories;
+using WebShop.Data.Common;
 using WebShop.Data.DAL.Models;
 using WebShop.GraphQL.API.Schema.InputTypes;
 
@@ -6,7 +7,12 @@ namespace WebShop.GraphQL.API.Schema.Mutations
 {
     public partial class MutationType
     {
-        public async Task<Orders> CreateOrder(OrderInputType orderInput)
+        public async Task<Orders> CreateOrder(
+            ProductRepo _productRepo,
+            CustomerRepo _customerRepo,
+            OrderRepo _orderRepo,
+            OrderDetailRepo _orderDetailRepo,
+            OrderInputType orderInput)
         {
             // Stock validation
             var orderProducts = orderInput.OrderDetail
@@ -21,7 +27,7 @@ namespace WebShop.GraphQL.API.Schema.Mutations
             if (validationResult)
             {
                 // Get Customer data
-                var customer = await _customerService.GetCustomer();
+                var customer = await _customerRepo.GetCustomer();
 
                 // Create Order
                 var order = await _orderRepo.Create(customer.Customer_Id, orderInput.Total);

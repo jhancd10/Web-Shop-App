@@ -1,21 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using WebShop.Core.Interfaces;
+﻿using Bogus;
+using Microsoft.EntityFrameworkCore;
 using WebShop.Data.DAL.Contexts;
 using WebShop.Data.DAL.Models;
 
 namespace WebShop.Core.Repositories
 {
-    public class CustomerRepo : ICustomerRepo
+    public class CustomerRepo : IAsyncDisposable
     {
         private readonly WebShopDbContext _context;
 
         public CustomerRepo(
-            WebShopDbContext context)
+            IDbContextFactory<WebShopDbContext> contextFactory)
         {
-            _context = context;
+            _context = contextFactory.CreateDbContext();
         }
 
-        public async Task<Customers> GetRandom()
+        private async Task<Customers> GetRandom()
         {
             // Create random value
             var rand = new Random();
@@ -23,6 +23,31 @@ namespace WebShop.Core.Repositories
 
             // Get customer with random value
             return await _context.Customers.Skip(toSkip).Take(1).FirstAsync();
+        }
+
+        public async Task<Customers> GetCustomer()
+        {
+            Customers customer = null!;
+
+            // Generate a random boolean
+            var rand = new Random();
+            var condition = rand.NextDouble() > 0.5;
+
+            // Random boolean is true then it will generate faker data to create Customer in DB
+            // Otherwise get random Customer from DB
+            if (condition)
+            {
+                var faker = new Faker<Customers>()
+                            .RuleFor(c => c.Customer_Name, f => f.Name.FullName())
+                            .RuleFor(c => c.Customer_Email, (f, e) => f.Internet.Email(e.Customer_Name))
+                            .Generate(1).First();
+
+                customer = await Create(faker.Customer_Name, faker.Customer_Email);
+            }
+
+            else customer = await GetRandom();
+
+            return customer;
         }
 
         public async Task<Customers> Create(string name, string email)
@@ -39,6 +64,11 @@ namespace WebShop.Core.Repositories
             await _context.SaveChangesAsync();
 
             return customer;
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return _context.DisposeAsync();
         }
     }
 }

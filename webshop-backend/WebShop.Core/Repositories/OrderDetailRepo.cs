@@ -1,17 +1,17 @@
-﻿using WebShop.Core.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using WebShop.Data.DAL.Contexts;
 using WebShop.Data.DAL.Models;
 
 namespace WebShop.Core.Repositories
 {
-    public class OrderDetailRepo : IOrderDetailRepo
+    public class OrderDetailRepo : IAsyncDisposable
     {
         private readonly WebShopDbContext _context;
 
         public OrderDetailRepo(
-            WebShopDbContext context)
+            IDbContextFactory<WebShopDbContext> contextFactory)
         {
-            _context = context;
+            _context = contextFactory.CreateDbContext();
         }
 
         public async Task<OrderDetails> Create(int orderId, int productId, int quantity, decimal price)
@@ -30,6 +30,11 @@ namespace WebShop.Core.Repositories
             await _context.SaveChangesAsync();
 
             return orderDetail;
+        }
+
+        public ValueTask DisposeAsync()
+        {
+            return _context.DisposeAsync();
         }
     }
 }

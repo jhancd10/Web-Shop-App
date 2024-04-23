@@ -7,7 +7,7 @@ namespace WebShop.GraphQL.API.Schema.Queries
     public partial class QueryType
     {
         [UseFiltering]
-        public async Task<List<Orders>> AllOrdersAsync([Service] WebShopDbContext _context)
+        public async Task<List<Orders>> AllOrdersAsync(WebShopDbContext _context)
         {
             var orders = await _context.Orders
                          .Include(o => o.Customer)
