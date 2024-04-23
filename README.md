@@ -10,7 +10,7 @@ Aplication that allows users to check categories, browse products with filters, 
 - Remove products from cart
 - Update product quantity in cart
 - Clear cart
-- Finish purchase
+- Complete purchase
 
 ## Technologies Used
 
@@ -86,3 +86,12 @@ VITE v5.2.8  ready in 291 ms
 
 ## Screenshots
 
+![Alt text](/screenshots/catalogFilters.jpeg?raw=true "Catalog and Filters")
+
+![Alt text](/screenshots/AddItemsCart.jpeg?raw=true "Items added to Shopping Cart")
+
+![Alt text](/screenshots/Cart.jpeg?raw=true "Shopping Cart")
+
+![Alt text](/screenshots/Categories.jpeg?raw=true "Categories")
+
+![Alt text](/screenshots/Orders.jpeg?raw=true "Orders")
