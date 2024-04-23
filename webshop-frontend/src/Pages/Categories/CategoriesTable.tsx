@@ -126,9 +126,9 @@ export default function CategoriesTable(props: any | null) {
                 <TableCell align="center">
                   {row.productsTotal == 0 ?
                     <Chip label={row.productsTotal} color="error" />
-                    : row.productsTotal > 0 && row.productsTotal <= 20 ?
+                    : row.productsTotal! > 0 && row.productsTotal! <= 20 ?
                       <Chip label={row.productsTotal} color="warning" />
-                      : row.productsTotal > 20 && row.productsTotal <= 30 ?
+                      : row.productsTotal! > 20 && row.productsTotal! <= 30 ?
                         <Chip label={row.productsTotal} color="primary" />
                         : <Chip label={row.productsTotal} color="success" />
                   }
